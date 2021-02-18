@@ -72,4 +72,4 @@ Route.group(() => {
     Route.get("getScoresByAlumn", "ScoreController.getScoresByAlumn");
 
 
-}).prefix("api/v1}2");
+}).prefix("api/v1");
