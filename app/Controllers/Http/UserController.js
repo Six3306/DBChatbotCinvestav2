@@ -13,6 +13,14 @@ class UserController {
         return response.json(user)
     }
 
+    async verifyEmail({ params, response }) {
+        const user = await User.find(params.email);
+        if (!user) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 
     async studentsNotLesson({ response }) {
 

@@ -33,6 +33,7 @@ Route.group(() => {
     Route.delete("users/:id", "UserController.delete");
     Route.get("usersNotLesson", "UserController.studentsNotLesson");
     Route.get("getProfesors", "UserController.getProfesors"); //obtenemos solo profesores de los usuarios
+    Route.get("usersVerifyEmail/:email", "UserController.verifyEmail");
 
     Route.post("lessons", "LessonController.store");
     Route.get("lessons", "LessonController.index");
@@ -72,4 +73,4 @@ Route.group(() => {
     Route.get("getScoresByAlumn", "ScoreController.getScoresByAlumn");
 
 
-}).prefix("api/v1");
+}).prefix("api/v2");
