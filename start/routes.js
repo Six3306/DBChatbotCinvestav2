@@ -34,6 +34,8 @@ Route.group(() => {
     Route.get("usersNotLesson", "UserController.studentsNotLesson");
     Route.get("getProfesors", "UserController.getProfesors"); //obtenemos solo profesores de los usuarios
     Route.get("usersVerifyEmail/:email", "UserController.verifyEmail");
+    Route.put('change_password/:id', 'UserController.changePassword');
+
 
     Route.post("lessons", "LessonController.store");
     Route.get("lessons", "LessonController.index");

@@ -1,6 +1,7 @@
 'use strict'
 const User = use('App/Models/User')
 const Database = use('Database')
+const Hash = use('Hash')
 
 class UserController {
     async index({ response }) {
@@ -36,6 +37,35 @@ class UserController {
         //el id de lesson solo se da cuando existe un registro con el id de user 
         const users = await Database.from('users').where({ 'users.type': 'Profesor' })
         return response.json(users)
+    }
+
+    async changePassword({ request, auth, response }) {
+        // get currently authenticated user
+
+        // const user = auth.current.user
+
+        // // verify if current password matches
+        // const verifyPassword = await Hash.verify(
+        //     request.input('password'),
+        //     user.password
+        // )
+
+        // // display appropriate message
+        // if (!verifyPassword) {
+        //     return response.status(400).json({
+        //         status: 'error',
+        //         message: 'Current password could not be verified! Please try again.'
+        //     })
+        // }
+
+        // // hash and save new password
+        // user.password = await Hash.make(request.input('newPassword'))
+        // await user.save()
+
+        return response.json({
+            status: 'success',
+            message: 'Password updated!'
+        })
     }
 
 
@@ -84,10 +114,20 @@ class UserController {
 
         return response.status(201).json(user)
     }
+
+
+    async delete({ params, response }) {
+        const user = await User.find(params.id)
+        if (!user) {
+            return response.status(404).json({ data: 'Resource not found' })
+        }
+        await user.delete()
+
+        return response.status(204).json(null)
+    }
+
     async update({ params, request, response }) {
         const userInfo = request.only(['username', 'email', 'password', 'age', 'type', "activated"])
-
-
         const user = await User.find(params.id)
         if (!user) {
             return response.status(404).json({ data: 'Resource not found' })
@@ -104,14 +144,20 @@ class UserController {
 
         return response.status(200).json(user)
     }
-    async delete({ params, response }) {
-        const user = await User.find(params.id)
-        if (!user) {
-            return response.status(404).json({ data: 'Resource not found' })
-        }
-        await user.delete()
 
-        return response.status(204).json(null)
+    async changePassword({ params, request, response }) {
+        // get currently authenticated user
+        const userInfo = request.only(['id', 'password'])
+        const user = await User.find(params.id)
+
+        // hash and save new password
+        user.password = (userInfo.password)
+        await user.save()
+
+        return response.json({
+            status: 'success',
+            message: 'Password updated!' + user.password
+        })
     }
 }
 
